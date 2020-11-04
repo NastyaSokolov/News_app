@@ -37,6 +37,7 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
         builder.scheme("https")
                 .authority("content.guardianapis.com")
                 .appendPath("search")
+                .appendQueryParameter("show-tags", "contributor")
                 .appendQueryParameter("api-key", "e847534f-af71-4273-9356-f9da71a2e242");
         GUARDIAN_REQUEST_URL = builder.build().toString();
         intent = new Intent(Intent.ACTION_VIEW);

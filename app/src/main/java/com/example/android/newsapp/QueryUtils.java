@@ -15,6 +15,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.sql.Array;
 import java.util.ArrayList;
 
 public class QueryUtils {
@@ -108,11 +109,17 @@ public class QueryUtils {
             JSONArray jsonArray = jsonObject.getJSONArray("results");
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject currentNews = jsonArray.getJSONObject(i);
+                JSONArray authorArray = currentNews.getJSONArray("tags");
+                String[] authors = new String[authorArray.length()];
+                for (int j = 0; j < authorArray.length(); j++) {
+                    JSONObject authorObject = authorArray.getJSONObject(j);
+                    authors[j] = authorObject.getString("webTitle");
+                }
                 String webTitle = currentNews.optString("webTitle");
                 String sectionName = currentNews.getString("sectionName");
                 String date = currentNews.getString("webPublicationDate");
                 String URL = currentNews.getString("webUrl");
-                news.add(new News(webTitle, sectionName, URL, date));
+                news.add(new News(webTitle, sectionName, URL, date, authors));
             }
             return news;
         } catch (JSONException e) {
